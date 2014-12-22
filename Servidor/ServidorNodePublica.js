@@ -17,6 +17,14 @@ listaFacturas.push(factura3);
 var express = require("express");
 var app = express();
 
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header('Access-Control-Allow-Methods','GET,PUT,POST,DELETE');
+    next();
+});
+
+
 //URL Facturas.
 app.get("/facturas", function(req, res){
     res.send(listaFacturas);
@@ -40,7 +48,7 @@ app.delete("/facturas/id/:id", function(req, res){
     res.send(req.params.id);
 });
 
-app.use("/", express.static(__dirname + "/ArquitecturaWebAngular", 'public'));
+/*app.use("/", express.static(__dirname + "/ArquitecturaWebAngular", 'public'));*/
 
 //Iniciamos el servidor.
 

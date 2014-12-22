@@ -13,19 +13,35 @@ function Factura(json){
 
 var app = angular.module('myApp', []);
 
+/*
 app.controller('controladorFacturas', function($scope){
     $scope.factura = {"id": 1, "concepto": "MAC","importe": 10000};
 });
+*/
 
-app.controller('listaFacturas', function($scope, $http){
-    var factura1 = {"id": 1, "concepto": "MAC", "importe":10000};
-    var factura2 = {"id": 2, "concepto": "Tablet", "importe": 500};
-    var factura3 = {"id": 3, "concepto": "phone", "importe": 1000};
+/*
+ Creamos un servicio para organizar las peticiones al servidor.
+ */
+app.service('ServicioFacturas', function($http){
+    this.listarFacturas = function(){
+        return $http.get("http://localhost:3000/facturas");
+    };
 
-    function listarConsultas($scope){
+    this.addFactura = function(factura){
+        return $http.post("http://localhost:3000/facturas", JSON.stringify( factura ));
+    };
+
+    this.removerFactura= function(factura){
+        return  $http.delete("http://localhost:3000/facturas/id/" + factura.id);
+    };
+});
+
+app.controller('listaFacturas', function($scope, $http, ServicioFacturas){
+
+    function listarConsultas($scope, ServicioFacturas){
         console.log("listar consultas");
 
-        var peticionFacturas = $http.get("facturas");
+        var peticionFacturas = ServicioFacturas.listarFacturas();
 
         peticionFacturas.success(function(listaFacturas){
             var listaObjetosFacturas = [];
@@ -37,32 +53,14 @@ app.controller('listaFacturas', function($scope, $http){
         });
     }
 
-    /*var listaFacturas = [
-        new Factura(factura1),
-        new Factura(factura2),
-        new Factura(factura3)
-    ];
-
-    $scope.listaFacturas = listaFacturas;
-*/
-    /*var peticionFacturas = $http.get("facturas");
-    peticionFacturas.success(function(listaFacturas){
-        var listaObjetosFacturas = [];
-        for(var i = 0; i < listaFacturas.length; i++){
-            listaObjetosFacturas.push(new Factura(listaFacturas[i]))
-        }
-
-        $scope.listaFacturas = listaObjetosFacturas;
-    });*/
-
-    listarConsultas($scope);
+    listarConsultas($scope, ServicioFacturas);
 
     $scope.addFactura = function(){
       //  var newFactura = {"id": 4, "concepto": "Nueva compra", "importe": 10};
       //  $scope.listaFacturas.push(new Factura($scope.nuevaFactura));
 
         console.log($scope.nuevaFactura);
-        var peticionNewFactura = $http.post("facturas", JSON.stringify( $scope.nuevaFactura ));//new Factura($scope.nuevaFactura));
+        var peticionNewFactura = ServicioFacturas.addFactura($scope.nuevaFactura);
 
         peticionNewFactura.success(function(datosNewFactura){
            console.log("POST "  + datosNewFactura);
@@ -85,7 +83,7 @@ app.controller('listaFacturas', function($scope, $http){
         $scope.listaFacturas = listado.filter(function(f){
             return (f !== factura);
         })*/
-        var peticionDelete = $http.delete("facturas/id/" + factura.id);
+        var peticionDelete = ServicioFacturas.removerFactura(factura);
 
         peticionDelete.success(function(idFactura){
             console.log("DELETE : " + idFactura);
@@ -99,3 +97,5 @@ app.controller('listaFacturas', function($scope, $http){
 
 
 });
+
+
