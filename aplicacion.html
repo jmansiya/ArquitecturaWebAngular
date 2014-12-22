@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+    <title>Arquitectura Web Cecilio EXAMPLES</title>
+
+    <script type="text/javascript" src="scripts/angular.min.js">
+    </script>
+
+
+    <script type="text/javascript" src="controller/app.js">
+    </script>
+</head>
+
+<body ng-controller="listaFacturas">
+    <!--<ul data-ng-repeat="factura in listaFacturas">
+        <li>
+            <p>{{factura.id}}</p>
+            <p>{{factura.concepto}}</p>
+            <p>{{factura.importe}}</p>
+        </li>
+    </ul>
+-->
+    <form>
+        <p>
+            <label>ID:</label>
+            <input type="text" data-ng-model="nuevaFactura.id">
+        </p>
+        <p>
+            <label>Concepto:</label>
+            <input type="text" data-ng-model="nuevaFactura.concepto">
+        </p>
+        <p>
+            <label>Importe:</label>
+            <input type="text" data-ng-model="nuevaFactura.importe">
+        </p>
+
+        <p>&nbsp;</p>
+        <input type="button" data-ng-click="addFactura()" value="Nueva Factura">
+    </form>
+
+    <p>&nbsp;</p>
+
+    <table>
+       <thead>
+            <th>ID</th>
+            <th>Concepto</th>
+            <th>Importe</th>
+            <th>Importe con IVA</th>
+            <th></th>
+       </thead>
+        <tbody>
+            <tr data-ng-repeat="factura in listaFacturas">
+                <td>{{ factura.id }}</td>
+                <td>{{ factura.concepto }}</td>
+                <td>{{ factura.importe }}</td>
+                <td>{{ factura.calcularIVA() }}</td>
+                <td><input type="button" value="Borrar" data-ng-click="deleteFactura(factura)"></td>
+            </tr>
+        </tbody>
+    </table>
+<!--
+
+    <p>&nbsp;</p>
+    <input type="button" value="Nueva Factura" data-ng-click="addFactura()">
+-->
+
+</body>
+</html>
