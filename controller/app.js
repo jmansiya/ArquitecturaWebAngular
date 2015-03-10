@@ -53,6 +53,14 @@ app.controller('listaFacturas', function($scope, $http, ServicioFacturas){
         });
     }
 
+   /* $scope.mostrarLista = false;
+    $scope.mostrarFormulario = true;*/
+
+    //Ahora usando data-ng-switch
+    // lista --> mostraremos el listado
+    // formulario -- mostraremos el formulario.
+    $scope.vista="lista";
+
     listarConsultas($scope, ServicioFacturas);
 
     $scope.addFactura = function(){
@@ -71,6 +79,13 @@ app.controller('listaFacturas', function($scope, $http, ServicioFacturas){
         $scope.nuevaFactura.id = "";
         $scope.nuevaFactura.concepto = "";
         $scope.nuevaFactura.importe = "";
+/*
+
+        $scope.mostrarLista = true;
+        $scope.mostrarFormulario = false;
+*/
+
+        $scope.vista="lista";
     };
 
     /*$scope.calcularIVA = function(factura){
@@ -94,7 +109,14 @@ app.controller('listaFacturas', function($scope, $http, ServicioFacturas){
         })
     };
 
+    $scope.verFormulario = function(){
+        console.log("verFormulario");
 
+    /*    $scope.mostrarLista = false;
+        $scope.mostrarFormulario = true;*/
+
+        $scope.vista="formulario";
+    }
 
 });
 

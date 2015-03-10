@@ -20,49 +20,58 @@
         </li>
     </ul>
 -->
-    <form>
-        <p>
-            <label>ID:</label>
-            <input type="text" data-ng-model="nuevaFactura.id">
-        </p>
-        <p>
-            <label>Concepto:</label>
-            <input type="text" data-ng-model="nuevaFactura.concepto">
-        </p>
-        <p>
-            <label>Importe:</label>
-            <input type="text" data-ng-model="nuevaFactura.importe">
-        </p>
+    <div data-ng-switch="vista">
+        <!--<div ng-show="mostrarFormulario">-->
+        <div data-ng-switch-when="formulario">
+            <form>
+                <p>
+                    <label>ID:</label>
+                    <input type="text" data-ng-model="$parent.nuevaFactura.id">
+                </p>
+                <p>
+                    <label>Concepto:</label>
+                    <input type="text" data-ng-model="$parent.nuevaFactura.concepto">
+                </p>
+                <p>
+                    <label>Importe:</label>
+                    <input type="text" data-ng-model="$parent.nuevaFactura.importe">
+                </p>
+
+                <p>&nbsp;</p>
+                <input type="button" data-ng-click="addFactura()" value="Aceptar">
+            </form>
+        </div>
 
         <p>&nbsp;</p>
-        <input type="button" data-ng-click="addFactura()" value="Nueva Factura">
-    </form>
 
-    <p>&nbsp;</p>
+       <!-- <div ng-show="mostrarLista">-->
+        <div data-ng-switch-when="lista">
+            <table>
+               <thead>
+                    <th>ID</th>
+                    <th>Concepto</th>
+                    <th>Importe</th>
+                    <th>Importe con IVA</th>
+                    <th></th>
+               </thead>
+                <tbody>
+                    <tr data-ng-repeat="factura in listaFacturas">
+                        <td>{{ factura.id }}</td>
+                        <td>{{ factura.concepto }}</td>
+                        <td>{{ factura.importe }}</td>
+                        <td>{{ factura.calcularIVA() }}</td>
+                        <td><input type="button" value="Borrar" data-ng-click="deleteFactura(factura)"></td>
+                    </tr>
+                </tbody>
+            </table>
 
-    <table>
-       <thead>
-            <th>ID</th>
-            <th>Concepto</th>
-            <th>Importe</th>
-            <th>Importe con IVA</th>
-            <th></th>
-       </thead>
-        <tbody>
-            <tr data-ng-repeat="factura in listaFacturas">
-                <td>{{ factura.id }}</td>
-                <td>{{ factura.concepto }}</td>
-                <td>{{ factura.importe }}</td>
-                <td>{{ factura.calcularIVA() }}</td>
-                <td><input type="button" value="Borrar" data-ng-click="deleteFactura(factura)"></td>
-            </tr>
-        </tbody>
-    </table>
+            <input type="button" data-ng-click="verFormulario()" value="Nueva Factura"/>
+        </div>
+    </div>
 <!--
 
     <p>&nbsp;</p>
     <input type="button" value="Nueva Factura" data-ng-click="addFactura()">
--->
 
 </body>
 </html>
